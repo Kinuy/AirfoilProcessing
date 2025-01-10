@@ -130,6 +130,7 @@
     <ClCompile Include="AirfoilGeoData.cpp" />
     <ClCompile Include="AirfoilGeoSummaryData.cpp" />
     <ClCompile Include="BladeGeoData.cpp" />
+    <ClCompile Include="CubicSpline.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="ProjectData.cpp" />
@@ -138,9 +139,11 @@
     <ClInclude Include="AirfoilGeoData.h" />
     <ClInclude Include="AirfoilGeoSummaryData.h" />
     <ClInclude Include="BladeGeoData.h" />
+    <ClInclude Include="CubicSpline.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="ProjectData.h" />
+    <ClInclude Include="spline.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
