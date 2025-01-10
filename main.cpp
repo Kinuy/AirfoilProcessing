@@ -3,7 +3,7 @@
 #include <sstream>
 #include <direct.h>
 #include <Windows.h> 
-#include <filesystem>
+// #include <filesystem>
 
 #include <string>
 #include <exception>
@@ -19,10 +19,6 @@
 
 using namespace std;
 
-
-//FILE *Log;
-
-
 int main(int argc, char* argv[])
 {
 	string projectDataFileName("Project.ini");
@@ -32,13 +28,8 @@ int main(int argc, char* argv[])
 		projectDataFileName.assign(argv[1]);
 	}
 	string logName(toolName + ".log");
-	//string logName2("Project2.log");
 	string logMessage = "";
-	//ofstream outputLogFile(logName);
 	pLogFile = new ofstream(logName);
-	//outputLogFile.write(logMessage.c_str(), logMessage.size());
-
-
 
 	ProjectData* pPD = new ProjectData();
 
@@ -64,7 +55,6 @@ int main(int argc, char* argv[])
 
 	writeAirfoilCamberLineData(pAGSD);
 
-	//outputLogFile.close();
 	pLogFile->close();
 
 }
@@ -73,10 +63,6 @@ void writeLogFile(ofstream& outputLogFile, string logMessage)
 {
 	outputLogFile.write(logMessage.c_str(), logMessage.size());
 }
-
-// Node::Node(int index, double x,double y, bool isTop, bool isLastFlatbackPoint): mIndex(index),mX(x),mY(y),mIsTop(isTop),mIsLastFlatbackPoint(isLastFlatbackPoint)
-// {
-// }
 
 void trimFlatbackPoints(class AirfoilGeoData* pAGD)
 {
@@ -97,23 +83,15 @@ void trimFlatbackPoints(class AirfoilGeoData* pAGD)
 	size_t trimFromEnd = pAGD->nodes.size() - bottomFlatbackPoint - 1;
 	size_t trimFromBeginning = topFlatbackPoint;
 	pAGD->nodes.erase(pAGD->nodes.begin(), pAGD->nodes.begin() + trimFromBeginning);
-	//size_t trimFromEnd = airfoilThick->nodes.size() - bottomFlatbackPoint;
 	pAGD->nodes.erase(pAGD->nodes.end() - trimFromEnd, pAGD->nodes.end());
 }
 
 void interpolateAirfoilGeoData(class BladeGeoData* pBGD, class AirfoilGeoSummaryData* pAGSD, class ProjectData* pPD) {
-	//pPD->bladeAnalyseSections.size()
-	//pAGSD->AirfoilGeoDataList.size()
-	//pBGD->bladeRelativeThickness.size()
-
-
 
 	//Task 0: interpolate rel thicknesses for provided sections
 	vector<double> relDv = pBGD->bladeRelativeThickness;
 	vector<double> vBladeRadius = pBGD->bladeRadius;
 
-	//vector<double> vTwistAnalyseSection;
-	//vector<double> vChordAnalyseSection;
 
 	assignBladeAnalyseSections(pPD);
 
@@ -122,10 +100,6 @@ void interpolateAirfoilGeoData(class BladeGeoData* pBGD, class AirfoilGeoSummary
 		double radiusTarget = pPD->bladeAnalyseSections.at(i);
 		double relThicknessTarget = interpol(vBladeRadius, relDv, radiusTarget);
 		pPD->relThicknessAtAnalyseSections.push_back(relThicknessTarget);
-		//cout << relThicknessTarget<<endl;
-
-		//vTwistAnalyseSection.push_back(interpol(pBGD->bladeRadius, pBGD->bladeTwist, pPD->bladeAnalyseSections.at(i)));
-		//vChordAnalyseSection.push_back(interpol(pBGD->bladeRadius, pBGD->bladeChord, pPD->bladeAnalyseSections.at(i)));
 	}
 
 	//Task1: loop over all rel thicknesses to interpolate and find in each loop step the two airfoils to interpolate between
@@ -136,17 +110,10 @@ void interpolateAirfoilGeoData(class BladeGeoData* pBGD, class AirfoilGeoSummary
 			if (pPD->relThicknessAtAnalyseSections.at(i) >= pAGSD->AirfoilGeoDataList.at(k)->getRelativeThickness())
 			{
 				continue;
-				//cout << "Rel Thickness out of interpolation range!" << endl;
 			}
 			else if (pPD->relThicknessAtAnalyseSections.at(i) > pAGSD->AirfoilGeoDataList.at(k + 1)->getRelativeThickness())
 			{
-				//cout << "Interpolation between:" << pAGSD->AirfoilGeoDataList.at(k)->getRelativeThickness() << " and " << pAGSD->AirfoilGeoDataList.at(k + 1)->getRelativeThickness() << " to " << pPD->relThicknessAtAnalyseSections.at(i) << endl;
-
-
-
-
 				// Task2: interpolation preparation starts here
-
 
 				AirfoilGeoData* airfoilThick = NULL;
 				AirfoilGeoData* airfoilThin = NULL;
@@ -247,8 +214,6 @@ void interpolateAirfoilGeoData(class BladeGeoData* pBGD, class AirfoilGeoSummary
 				auto it = unique(xListTop.begin(), xListTop.end());
 				xListTop.erase(it, xListTop.end());
 
-				//reverse(xListTop.begin(), xListTop.end());
-
 				// bottom
 				// insert 0 at start because 0 is part of top when data is read in
 				xListBottom.insert(xListBottom.begin(), 0.0);
@@ -279,24 +244,12 @@ void interpolateAirfoilGeoData(class BladeGeoData* pBGD, class AirfoilGeoSummary
 				reverse(yListTopThickNew.begin(), yListTopThickNew.end());
 				reverse(yListTopThinNew.begin(), yListTopThinNew.end());
 
-				// bottom
-				// reverse for interpolation
-				//reverse(xListBottomThick.begin(), xListBottomThick.end());
-				//reverse(yListBottomThick.begin(), yListBottomThick.end());
-				//reverse(xListBottomThin.begin(), xListBottomThin.end());
-				//reverse(yListBottomThin.begin(), yListBottomThin.end());
-
-
-
 				for (double& element : xListBottom)
 				{
 					yListBottomThickNew.push_back(interpol(xListBottomThick, yListBottomThick, element));
 					yListBottomThinNew.push_back(interpol(xListBottomThin, yListBottomThin, element));
 				}
 				// reverse bottom again
-				//reverse(yListBottomThickNew.begin(), yListBottomThickNew.end());
-				//reverse(yListBottomThinNew.begin(), yListBottomThinNew.end());
-
 				// Task2.3 now we can linear interpolate between both airfoils because we have in both the same x vals
 				// top
 				int indexCounter = 0;
@@ -307,15 +260,11 @@ void interpolateAirfoilGeoData(class BladeGeoData* pBGD, class AirfoilGeoSummary
 				pAGSD->AirfoilInterpolatedGeoDataList.back()->nodes.emplace_back(indexCounter, 1.0, 0.0, true, false);
 
 				for (size_t i = 0; i < xListTop.size(); ++i) {
-
-
-					//std::cout << "Element at index " << i << ": " << myVector[i] << std::endl;
 					yListTopNew.push_back((1.0 - percent) * yListTopThickNew[i] + percent * yListTopThinNew[i]);
 					pAGSD->AirfoilInterpolatedGeoDataList.back()->nodes.emplace_back(indexCounter, xListTop_reversed[i], yListTopNew[i], true, false);
 					indexCounter++;
 				}
 				// flip top vectors because we start at TE x=1
-				//reverse(pAGSD->AirfoilInterpolatedGeoDataList.back()->nodes.begin(), pAGSD->AirfoilInterpolatedGeoDataList.back()->nodes.end());
 
 				// bottom
 				// remove 0,0 values because we get this point drom top side
@@ -324,41 +273,13 @@ void interpolateAirfoilGeoData(class BladeGeoData* pBGD, class AirfoilGeoSummary
 				yListBottomThickNew.erase(yListBottomThickNew.begin());
 
 				for (size_t i = 0; i < xListBottom.size(); ++i) {
-					//std::cout << "Element at index " << i << ": " << myVector[i] << std::endl;
-					//x_top_new = (1.0 - percent) * AF1_y_new + percent * AF2_y_new;
-					//if (xListBottom[i] == 0)
-					//{
-					//	continue;
-					//}
-					//else
-					//{
 					yListBottomNew.push_back((1.0 - percent) * yListBottomThickNew[i] + percent * yListBottomThinNew[i]);
 					pAGSD->AirfoilInterpolatedGeoDataList.back()->nodes.emplace_back(indexCounter, xListBottom[i], yListBottomNew[i], false, false);
 					indexCounter++;
-					//}
 				}
 				// put last point 1 , 0
 				pAGSD->AirfoilInterpolatedGeoDataList.back()->nodes.emplace_back(indexCounter, 1.0, 0.0, false, true);
-
-				//cout << "test" << endl;
-
-				//for (double& element : xListTop)
-				//{
-				//	yListTopThickNew.push_back(interpol(xListTopThick, yListTopThick, element));
-				//	yListTopThinNew.push_back(interpol(xListTopThin, yListTopThin, element));
-				//}
-				//for (double& element : xListBottom)
-				//{
-				//	yListTopThickNew.push_back(interpol(xListTopThick, yListTopThick, element));
-				//	yListTopThinNew.push_back(interpol(xListTopThin, yListTopThin, element));
-				//}
-
-
-				//x_top_new = (1.0 - percent) * AF1_y_new + percent * AF2_y_new;
-				//y_top_new = (1.0 - percent) * AF1_y_new + percent * AF2_y_new;
-
 				pAGSD->AirfoilInterpolatedGeoDataList.back()->calcAirfoilCamberLine();
-
 			}
 		}
 	}
@@ -375,19 +296,11 @@ void assignAirfoilMarker(class AirfoilGeoSummaryData* pAGSD)
 			if ((pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i).X() == 0.0) && (pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i).Y() == 0.0))
 			{
 				pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerLE = i + 1;
-
 				pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerLEPSMAX = i + 1 + 20;
 				pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerLESSMAX = i + 1 - 20;
-
 			}
 
 			pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerTE = pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.size();
-
-
-
-			//pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerPKPSTE = 0.0;
-			//pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerPKPSTE = 0.0;
-
 			pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerTEPSMAX = pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.size() - 1;
 			pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerTEPS = pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.size() - 1;
 			pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerTESSMAX = 2;
@@ -409,9 +322,6 @@ void getBladeAnalyseSections(ProjectData* pPD)
 	double mainResolution = 1;
 	double lscale = 1.0 / (pPD->hubRadius + pPD->bladeLength);
 	vector<double> bladeTipSegmentWidth = { 0.1, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 };
-	//vector<double> bladeAnalyseSections;
-
-	//pPD->bladeAnalyseSections
 
 	pPD->bladeAnalyseSections.push_back(pPD->bladeLength - bladeTipSegmentWidth[0] / 2.0);
 	double r0 = 1.0 / 3.0;
@@ -434,8 +344,6 @@ void getBladeAnalyseSections(ProjectData* pPD)
 		relative_blade_analyse_sections.push_back((element + pPD->hubRadius) * lscale);
 	}
 
-	//cout << "fertig" << endl;
-
 }
 
 void writeAirfoilMetaData(class AirfoilGeoSummaryData* pAGSD, ProjectData* pPD)
@@ -450,10 +358,6 @@ void writeAirfoilMetaData(class AirfoilGeoSummaryData* pAGSD, ProjectData* pPD)
 	outputFile << "Chord [m]\t";
 	outputFile << "Twist [deg]\t";
 	outputFile << "Relative Thickness [%]\t";
-
-	//outputFile << "Trailing Edge Stream Angle Psi at SS [deg]\t";
-	//outputFile << "Trailing Edge Stream Angle Psi at PS [deg]\t";
-	//outputFile << "Trailing Edge Stream Angle Psi [deg]" << "\t";
 	outputFile << "Trailing Edge Solid Angle Psi [deg]" << "\t";
 	outputFile << "Trailing Edge Thickness [m]\t";
 	outputFile << "Turbulence Length Scale [m]" << "\t";
@@ -463,18 +367,13 @@ void writeAirfoilMetaData(class AirfoilGeoSummaryData* pAGSD, ProjectData* pPD)
 
 	for (int k = 0; k < pAGSD->AirfoilInterpolatedGeoDataList.size(); k++)
 	{
-		//outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k). << "\n";
 		outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->airfoilGeoNameShort << "\t";
 		outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getBladeRadius() << "\t";
 		outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getChord() << "\t";
 		outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getTwist() << "\t";
 		outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getRelativeThickness() << "\t";
-
-		//outputFile << (180 / PI * pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getTrailingEdgeStreamAnglePsiAtSS()) << "\t";
-		//outputFile << (180 / PI * pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getTrailingEdgeStreamAnglePsiAtPS()) << "\t";
 		outputFile << (pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getTrailingEdgeSolidAnglePsiNew(pPD)) << "\t";
 		outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getCorrectedTrailingEdgeThickness() << "\t";
-		//outputFile << (pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getTrailingEdgeSolidAnglePsi()) << "\t";
 		outputFile << (pAGSD->AirfoilInterpolatedGeoDataList.at(k)->getTurbulenceLengthScale()) << "\t";
 		outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->calcNormalizedThickness(0.01) << "\t";
 		outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->calcNormalizedThickness(0.1) << "\t";
@@ -518,24 +417,6 @@ string ExePath() {
 	return "";
 }
 
-// std::string ExePath() {
-//     char buffer[PATH_MAX];
-//     Dl_info dl_info;
-
-//     // Use dladdr to get information about the current executable
-//     if (dladdr((void*)ExePath, &dl_info) && dl_info.dli_fname) {
-//         std::string path(dl_info.dli_fname);
-//         std::string::size_type pos = path.find_last_of("\\/");
-//         if (pos != std::string::npos) {
-//             return path.substr(0, pos);
-//         }
-//     }
-//     return "";
-// }
-
-
-
-
 void writeAirfoilCamberLineData(class AirfoilGeoSummaryData* pAGSD)
 {
 	string AirfoilDir = "Airfoils";
@@ -570,20 +451,6 @@ void writeAirfoilGeoInterpolatedFiles(class BladeGeoData* pBGD, class AirfoilGeo
 
 	assignAirfoilMarker(pAGSD);
 
-	//char* path;
-	//_get_pgmptr(&path);
-
-	//int bytes = _get_pgmptr(&path);
-	//if (bytes) {
-	//	// Remove the ".exe" extension
-	//	char* dotPos = strrchr(path, '.');
-	//	if (dotPos)
-	//		*dotPos = '\0';
-	//}
-
-	//	cout << path << endl;
-	//cout << ExePath();
-
 	ofstream outputFileYAML(AirfoilDir + "\\" + "AirfoilList" + ".yaml");
 	outputFileYAML << "Coordinates: [";
 
@@ -593,22 +460,14 @@ void writeAirfoilGeoInterpolatedFiles(class BladeGeoData* pBGD, class AirfoilGeo
 		string fileName = pAGSD->AirfoilInterpolatedGeoDataList.at(k)->airfoilGeoNameShort;
 		ofstream outputFile(AirfoilNafnoiseDir + "\\" + fileName + ".dat");
 
-
-
 		outputFile << fileName << "\n";
 
 		for (int i = 0; i < pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.size(); i++)
 		{
-			// skip doubled nose 0,0 point
-			//if ((i > 0) && (pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i).X() == 0) && (pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i - 1).X() == 0))
-			//{
-			//	continue;
-			//}
 			if ((i > 0) && (i < pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.size() - 1))
 			{
 				outputFile << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i).X() << " " << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i).Y() << "\n";
 			}
-
 		}
 		outputFile.close();
 	}
@@ -636,24 +495,10 @@ void writeAirfoilGeoInterpolatedFiles(class BladeGeoData* pBGD, class AirfoilGeo
 		outputFile << "MARKER\tTE\t" << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->markerTE << "\n";
 		outputFile << "#\tX\tY" << "\n";
 
-		//outputFile << "DEF\t" << 1 << "\t" << 0 << "\n";
-
 		for (int i = 0; i < pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.size(); i++)
 		{
-			// skip doubled nose 0,0 point
-			//if ((i > 0) && (pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i).X() == 0) && (pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i - 1).X() == 0))
-			//{
-			//	continue;
-			//}
-			//else
-			//{
 			outputFile << "DEF\t" << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i).X() << "\t" << pAGSD->AirfoilInterpolatedGeoDataList.at(k)->nodes.at(i).Y() << "\n";
-
-			//}
 		}
-
-		//outputFile << "DEF\t" << 1 << "\t" << 0 << "\n";
-
 		outputFile.close();
 	}
 	outputFileYAML << "\n]";
@@ -673,7 +518,7 @@ void readProjectFile(string fileName, class ProjectData* pPD)
 	string buf;
 	string buffer;
 	pPD->takeAnalyseSectionsInput = false;
-	//while (getline(inputFile,line))
+
 	while (!inputFile.eof())
 	{
 		inputFile >> buffer;
@@ -777,7 +622,6 @@ void readAirfoilGeoFiles(class AirfoilGeoSummaryData* pAGSD)
 		}
 		string line;
 		string buffer, buffer2, buffer3;
-		//size_t found_at;
 		int indexCounter = 0;
 		double xLast, xNext;
 
@@ -795,7 +639,7 @@ void readAirfoilGeoFiles(class AirfoilGeoSummaryData* pAGSD)
 			{
 				string relativeThickness;
 				inputFile >> relativeThickness;
-				pAGSD->AirfoilGeoDataList.at(i)->setRelativeThickness(stod(relativeThickness)); //= stod(relativeThickness);
+				pAGSD->AirfoilGeoDataList.at(i)->setRelativeThickness(stod(relativeThickness)); 
 			}
 			if (!buffer.compare("MARKER"))
 			{
@@ -974,12 +818,10 @@ void readBladeGeoFile(string fileName, class BladeGeoData* pBGD)
 
 double interpol(vector<double> x, vector<double> y, double xtarget)
 {
-	//reverse(x.begin(), x.end());
-	//reverse(y.begin(), y.end());
 	if (y.size() != x.size()) cout << "Error: x and y arrays have not the same size" << endl;
 	size_t i;
-	if (xtarget < x.at(0)) return y.at(0);		// Wenn xtarget unten out of range, dann untersten y-wert zur�ck
-	if (xtarget > x.back()) return y.back();	// Wenn xtarget oben out of range, dann obersten y-wert zur�ck
+	if (xtarget < x.at(0)) return y.at(0);		// Wenn xtarget unten out of range, dann untersten y-wert zuruck
+	if (xtarget > x.back()) return y.back();	// Wenn xtarget oben out of range, dann obersten y-wert zuruck
 	for (i = 0; i < x.size() - 1; i++)
 		if ((x.at(i) <= xtarget) && x.at(i + 1) >= xtarget) break;
 	return y.at(i) + (xtarget - x.at(i)) * (y.at(i + 1) - y.at(i)) / (x.at(i + 1) - x.at(i));
