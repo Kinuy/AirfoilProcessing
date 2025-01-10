@@ -349,9 +349,9 @@ void getBladeAnalyseSections(ProjectData* pPD)
 void writeAirfoilMetaData(class AirfoilGeoSummaryData* pAGSD, ProjectData* pPD)
 {
 	string AirfoilDir = "Airfoils";
-	AirfoilNafnoiseDir = "Airfoils\\Nafnoise";
+	AirfoilNoiseDir = "Airfoils\\BladeNoise";
 	string fileName = "AirfoilMetaData";
-	ofstream outputFile(AirfoilNafnoiseDir + "\\" + fileName + ".dat");
+	ofstream outputFile(AirfoilNoiseDir + "\\" + fileName + ".dat");
 
 	outputFile << "Airfoil File Name [-]\t";
 	outputFile << "Blade Radius [m]\t";
@@ -382,7 +382,7 @@ void writeAirfoilMetaData(class AirfoilGeoSummaryData* pAGSD, ProjectData* pPD)
 	outputFile.close();
 
 	fileName = "GeometrieDat4AirfoilMetaData";
-	ofstream outputFile2(AirfoilNafnoiseDir + "\\" + fileName + ".dat");
+	ofstream outputFile2(AirfoilNoiseDir + "\\" + fileName + ".dat");
 
 	outputFile2 << "#	Revision	" << "\n";
 	outputFile2 << "#	Last Export :	" << "\n";
@@ -441,13 +441,13 @@ void writeAirfoilGeoInterpolatedFiles(class BladeGeoData* pBGD, class AirfoilGeo
 
 	AirfoilDir = "Airfoils";
 	AirfoilACLDir = "Airfoils\\ACL";
-	AirfoilNafnoiseDir = "Airfoils\\Nafnoise";
+	AirfoilNoiseDir = "Airfoils\\BladeNoise";
 
 	vector<string> pathList;
 
 	Create_Directory(AirfoilDir);
 	Create_Directory(AirfoilACLDir);
-	Create_Directory(AirfoilNafnoiseDir);
+	Create_Directory(AirfoilNoiseDir);
 
 	assignAirfoilMarker(pAGSD);
 
@@ -458,7 +458,7 @@ void writeAirfoilGeoInterpolatedFiles(class BladeGeoData* pBGD, class AirfoilGeo
 
 		pAGSD->AirfoilInterpolatedGeoDataList.at(k)->airfoilGeoName;
 		string fileName = pAGSD->AirfoilInterpolatedGeoDataList.at(k)->airfoilGeoNameShort;
-		ofstream outputFile(AirfoilNafnoiseDir + "\\" + fileName + ".dat");
+		ofstream outputFile(AirfoilNoiseDir + "\\" + fileName + ".dat");
 
 		outputFile << fileName << "\n";
 

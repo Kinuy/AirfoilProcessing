@@ -17,7 +17,7 @@ ofstream* pLogFile;
 string toolName = "AirfoilProcessing";
 string AirfoilDir;
 string AirfoilACLDir;
-string AirfoilNafnoiseDir;
+string AirfoilNoiseDir;
 
 void readProjectFile(string fileName, class ProjectData* pPD);
 
