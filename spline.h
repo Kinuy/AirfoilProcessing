@@ -41,8 +41,8 @@
  // (we get them because we have implementations in the header file,
  // and this is because we want to be able to quickly separate them
  // into a cpp file if necessary)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wunused-function"
 
 // unnamed namespace only because the implementation is in this
 // header file and we don't want to export symbols to the obj files
@@ -665,7 +665,7 @@ namespace
 				std::vector<double> x(this->dim());
 				size_t j_stop;
 				double sum;
-				for (int i = this->dim() - 1; i >= 0; i--) {
+				for (int i = (int)this->dim() - 1; i >= 0; i--) {
 					sum = 0;
 					j_stop = min((int)(this->dim() - 1), i + this->num_upper());
 					for (int j = i + 1; j <= j_stop; j++) sum += this->operator()(i, j) * x[j];
@@ -695,6 +695,6 @@ namespace
 
 } // namespace
 
-#pragma GCC diagnostic pop
+// #pragma GCC diagnostic pop
 
 #endif /* TK_SPLINE_H */
