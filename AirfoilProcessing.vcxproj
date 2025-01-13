@@ -18,6 +18,25 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\AirfoilGeoData.cpp" />
+    <ClCompile Include="src\AirfoilGeoSummaryData.cpp" />
+    <ClCompile Include="src\BladeGeoData.cpp" />
+    <ClCompile Include="src\CubicSpline.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Node.cpp" />
+    <ClCompile Include="src\ProjectData.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\AirfoilGeoData.h" />
+    <ClInclude Include="src\AirfoilGeoSummaryData.h" />
+    <ClInclude Include="src\BladeGeoData.h" />
+    <ClInclude Include="src\CubicSpline.h" />
+    <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\Node.h" />
+    <ClInclude Include="src\ProjectData.h" />
+    <ClInclude Include="src\spline.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -126,25 +145,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="AirfoilGeoData.cpp" />
-    <ClCompile Include="AirfoilGeoSummaryData.cpp" />
-    <ClCompile Include="BladeGeoData.cpp" />
-    <ClCompile Include="CubicSpline.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Node.cpp" />
-    <ClCompile Include="ProjectData.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AirfoilGeoData.h" />
-    <ClInclude Include="AirfoilGeoSummaryData.h" />
-    <ClInclude Include="BladeGeoData.h" />
-    <ClInclude Include="CubicSpline.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="Node.h" />
-    <ClInclude Include="ProjectData.h" />
-    <ClInclude Include="spline.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

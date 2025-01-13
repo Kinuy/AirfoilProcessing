@@ -15,51 +15,51 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\AirfoilGeoData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilGeoData.cpp">
+    <ClCompile Include="src\AirfoilGeoSummaryData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirfoilGeoSummaryData.cpp">
+    <ClCompile Include="src\BladeGeoData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BladeGeoData.cpp">
+    <ClCompile Include="src\CubicSpline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProjectData.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
+    <ClCompile Include="src\Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CubicSpline.cpp">
+    <ClCompile Include="src\ProjectData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
+    <ClInclude Include="src\AirfoilGeoData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilGeoData.h">
+    <ClInclude Include="src\AirfoilGeoSummaryData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AirfoilGeoSummaryData.h">
+    <ClInclude Include="src\BladeGeoData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BladeGeoData.h">
+    <ClInclude Include="src\CubicSpline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectData.h">
+    <ClInclude Include="src\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
+    <ClInclude Include="src\Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CubicSpline.h">
+    <ClInclude Include="src\ProjectData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="spline.h">
+    <ClInclude Include="src\spline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
